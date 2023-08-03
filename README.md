@@ -33,7 +33,7 @@ DB_NAME=postgres
 DB_HOST=localhost
 DB_PORT=5432
 DB_USERNAME=postgres
-DB_PASS=pass123
+DB_PASS=root
 ```
 
 ## Running the app
