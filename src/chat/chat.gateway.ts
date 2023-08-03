@@ -19,7 +19,7 @@ import { LeaveRoomDto } from './dto/leave-room.dto';
 import { KickUserDto } from './dto/kick-user.dto';
 import { BanUserDto } from './dto/ban-user.dto';
 
-@UsePipes(new ValidationPipe())
+// @UsePipes(new ValidationPipe())
 @WebSocketGateway()
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
@@ -76,9 +76,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('join')
   async onRoomJoin(client: Socket, joinRoomDto: JoinRoomDto) {
-    const { roomId } = joinRoomDto;
+    const roomId  = joinRoomDto.roomId;
     const limit = 10;
-
+    console.log('dto', joinRoomDto)
     const room = await this.roomService.findOneWithRelations(roomId);
 
     if (!room) return;
@@ -89,8 +89,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     await this.userService.updateUserRoom(userId, room);
 
     client.join(roomId);
-
-    client.emit('message', messages);
+    this.server.emit('join',room);
+    // client.emit('message', messages);
+    client.broadcast.emit('message', messages);
   }
 
   @SubscribeMessage('leave')

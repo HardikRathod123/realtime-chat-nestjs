@@ -17,7 +17,6 @@ export class AuthIoAdapter extends IoAdapter {
   createIOServer(port: number, options?: any): any {
     options.allowRequest = async (request, allowFunction) => {
       const token = request._query?.token;
-
       const isVerified =
         token && (await this.authService.verifyAccessToken(token));
       const userExists =

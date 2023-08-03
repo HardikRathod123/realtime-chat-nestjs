@@ -21,15 +21,17 @@ async function bootstrap() {
   );
 
   app.useWebSocketAdapter(new AuthIoAdapter(app));
-
+  app.enableCors();
+  
   const options = new DocumentBuilder()
     .setTitle('Realtime Chat')
     .setDescription('Chat created using Nest.js + Websockets')
     .setVersion('1.0')
+    .setExternalDoc('Postman Collection', '/api-json')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
+  await app.listen(8000);
 }
 bootstrap();
